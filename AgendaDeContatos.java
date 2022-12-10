@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -67,82 +68,107 @@ public class AgendaDeContatos {
     }
     public void removerContato(Scanner entrada){
         int indice = pegarIndice(entrada);
-        contatos.remove(indice);
+        if (verificarIndice(indice))
+        {
+            contatos.remove(indice);
+        }
     }
+
     public void removerTodos(){
         contatos.clear();
     }
     public void adicionarTelefone(Scanner entrada){
         Integer indice = pegarIndice(entrada);
-        Telefone telefone = incluirTelefone(entrada);
-        if (contatos.get(indice).getTelefones().stream().anyMatch(t -> t.equals(telefone))) {
-            System.out.println("Telefone já existente nesse contato.");
-            return;
+        if (verificarIndice(indice)) {
+            Telefone telefone = incluirTelefone(entrada);
+            if (contatos.get(indice).getTelefones().stream().anyMatch(t -> t.equals(telefone))) {
+                System.out.println("Telefone já existente nesse contato.");
+                return;
+            }
+            contatos.get(indice).getTelefones().add(telefone);
         }
-        contatos.get(indice).getTelefones().add(telefone);
     }
     public void adicionarEndereco(Scanner entrada){
         Integer indice = pegarIndice(entrada);
-        Endereco endereco = incluirEndereco(entrada);
-        if (contatos.get(indice).getEnderecos().stream().anyMatch(t -> t.equals(endereco))) {
-            System.out.println("Endereço já existente nesse contato.");
-            return;
+        if (verificarIndice(indice)) {
+            Endereco endereco = incluirEndereco(entrada);
+            if (contatos.get(indice).getEnderecos().stream().anyMatch(t -> t.equals(endereco))) {
+                System.out.println("Endereço já existente nesse contato.");
+                return;
+            }
+            contatos.get(indice).getEnderecos().add(endereco);
         }
-        contatos.get(indice).getEnderecos().add(endereco);
     }
+
     public void removerTelefone(Scanner entrada){
         Integer indiceDoContato = pegarIndice(entrada);
-        System.out.println("Informe o índice do telefone: ");
-        int indiceDoTelefone = entrada.nextInt() - 1;
-        entrada.nextLine();
-        contatos.get(indiceDoContato).getTelefones().remove(indiceDoTelefone);
+        if (verificarIndice(indiceDoContato)) {
+            System.out.println("Informe o índice do telefone: ");
+            int indiceDoTelefone = entrada.nextInt() - 1;
+            entrada.nextLine();
+            contatos.get(indiceDoContato).getTelefones().remove(indiceDoTelefone);
+        }
     }
     public void removerEndereco(Scanner entrada){
         Integer indiceDoContato = pegarIndice(entrada);
-        System.out.println("Informe o índice do endereco: ");
-        int indiceDoEndereco = entrada.nextInt() - 1;
-        entrada.nextLine();
-        contatos.get(indiceDoContato).getEnderecos().remove(indiceDoEndereco);
+        if (verificarIndice(indiceDoContato)) {
+            System.out.println("Informe o índice do endereco: ");
+            int indiceDoEndereco = entrada.nextInt() - 1;
+            entrada.nextLine();
+            contatos.get(indiceDoContato).getEnderecos().remove(indiceDoEndereco);
+        }
     }
     public void informacoesDe(Scanner entrada){
         Integer indice = pegarIndice(entrada);
-        List<Telefone> telefones = contatos.get(indice).getTelefones();
-        List<Endereco> enderecos = contatos.get(indice).getEnderecos();
-        System.out.println(contatos.get(indice));
-        System.out.println("Telefones:");
-        for (int i = 0; i < telefones.size(); i++)
-            System.out.println((i + 1) + " - " + telefones.get(i));
-        System.out.println("Endereços: ");
-        for (int i = 0; i < enderecos.size(); i++)
-            System.out.println((i + 1) + " - " + enderecos.get(i));
+
+        if (verificarIndice(indice)) {
+            List<Telefone> telefones = contatos.get(indice).getTelefones();
+            List<Endereco> enderecos = contatos.get(indice).getEnderecos();
+            System.out.println(contatos.get(indice));
+            System.out.println("Telefones:");
+            for (int i = 0; i < telefones.size(); i++)
+                System.out.println((i + 1) + " - " + telefones.get(i));
+            System.out.println("Endereços: ");
+            for (int i = 0; i < enderecos.size(); i++)
+                System.out.println((i + 1) + " - " + enderecos.get(i));
+        }
     }
     public void telefonesDe(Scanner entrada) {
         Integer indice = pegarIndice(entrada);
-        List<Telefone> telefones = contatos.get(indice).getTelefones();
-        System.out.println("Telefones:");
-        for (int i = 0; i < telefones.size(); i++)
-            System.out.println((i + 1) + " - " + telefones.get(i));
+        if (verificarIndice(indice)) {
+            List<Telefone> telefones = contatos.get(indice).getTelefones();
+            System.out.println("Telefones:");
+            for (int i = 0; i < telefones.size(); i++)
+                System.out.println((i + 1) + " - " + telefones.get(i));
+        }
     }
     public void enderecosDe(Scanner entrada){
         Integer indice = pegarIndice(entrada);
-        List<Endereco> enderecos = contatos.get(indice).getEnderecos();
-        System.out.println("Endereços: ");
-        for (int i = 0; i < enderecos.size(); i++)
-            System.out.println((i + 1) + " - " + enderecos.get(i));
+        if (verificarIndice(indice)) {
+            List<Endereco> enderecos = contatos.get(indice).getEnderecos();
+            System.out.println("Endereços: ");
+            for (int i = 0; i < enderecos.size(); i++)
+                System.out.println((i + 1) + " - " + enderecos.get(i));
+        }
     }
     public void umTelefoneDe(Scanner entrada){
         Integer indiceDoContato = pegarIndice(entrada);
-        System.out.println("Informe o índice do telefone: ");
-        Integer indiceDoTelefone = entrada.nextInt() - 1;
-        entrada.nextLine();
-        System.out.println(contatos.get(indiceDoContato).getTelefones().get(indiceDoTelefone));
+        if (verificarIndice(indiceDoContato)) {
+            System.out.println("Informe o índice do telefone: ");
+            Integer indiceDoTelefone = entrada.nextInt() - 1;
+            entrada.nextLine();
+            System.out.println(contatos.get(indiceDoContato).getTelefones().get(indiceDoTelefone));
+        }
     }
     public void umEnderecoDe(Scanner entrada){
+
         Integer indiceDoContato = pegarIndice(entrada);
-        System.out.println("Informe o índice do telefone: ");
-        Integer indiceDoEndereco = entrada.nextInt() - 1;
-        entrada.nextLine();
-        System.out.println(contatos.get(indiceDoContato).getEnderecos().get(indiceDoEndereco));
+        if (verificarIndice(indiceDoContato)) {
+            System.out.println("Informe o índice do telefone: ");
+            Integer indiceDoEndereco = entrada.nextInt() - 1;
+            entrada.nextLine();
+            System.out.println(contatos.get(indiceDoContato).getEnderecos().get(indiceDoEndereco));
+        }
     }
     private Boolean simOuNao(Scanner entrada){
         Character resposta = 'a';
@@ -197,8 +223,26 @@ public class AgendaDeContatos {
     }
     private Integer pegarIndice(Scanner entrada){
         System.out.println("Informe o índice do contato: ");
-        Integer indice = entrada.nextInt() - 1;
-        entrada.nextLine();
-        return indice;
+        try {
+            Integer indice = entrada.nextInt() - 1;
+            return indice;
+        }
+        catch (InputMismatchException e){
+            System.out.println("Erro: caractere inválido, tente novamente: ");
+            return (pegarIndice(entrada));
+        }
+        finally {
+            entrada.nextLine();
+        }
     }
+    private boolean verificarIndice(Integer index){
+        try{
+           contatos.get(index);
+           return(true);
+
+        } catch(IndexOutOfBoundsException e){
+            System.out.println("Índice inválido, finalizando operação!");
+        }
+            return(false);
+    };
 }
