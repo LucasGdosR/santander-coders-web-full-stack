@@ -6,9 +6,10 @@ public class Main {
         Boolean continuar = true;
         Scanner entrada = new Scanner(System.in);
         Integer opcao;
-        System.out.println("Bem vindo à sua Agenda de Contatos!");
+
+        ConsoleColors.whiteBoldBrightPrint("Bem vindo à sua Agenda de Contatos!");
         while (continuar){
-            System.out.println("Qual operação deseja realizar?");
+            ConsoleColors.whiteBoldBrightPrint("Qual operação deseja realizar?");
             listarOpcoes();
             opcao = escolherOpcao(entrada);
             switch (opcao){
@@ -27,14 +28,14 @@ public class Main {
                 case 13 -> agenda.umTelefoneDe(entrada);
                 case 14 -> agenda.umEnderecoDe(entrada);
             }
-            System.out.println("Deseja realizar mais operações? S/N");
+            ConsoleColors.whiteBoldBrightPrint("Deseja realizar mais operações? S/N");
             continuar = desejaContinuar(entrada);
         }
         entrada.close();
-        System.out.println("Volte sempre.");
+        ConsoleColors.whiteBoldBrightPrint("Volte sempre.");
     }
     static void listarOpcoes(){
-        System.out.println("1. Adicionar um contato e seus dados;\n" +
+        ConsoleColors.whiteBoldBrightPrint("1. Adicionar um contato e seus dados;\n" +
                 "2. Listar todos os contatos da agenda;\n" +
                 "3. Buscar um contato de acordo com uma palavra chave (Utilize os dados de nome, sobrenome para realizar a busca)\n" +
                 "4. Remover um contato da agenda;\n" +
@@ -62,7 +63,7 @@ public class Main {
                 return true;
             else if (resposta.equals('n'))
                 return false;
-            System.out.println("Não entendi. S/N? ");
+            ConsoleColors.whiteBoldBrightPrint("Não entendi. S/N? ");
         }
     }
 }

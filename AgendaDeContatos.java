@@ -54,10 +54,12 @@ public class AgendaDeContatos {
         enderecos.forEach(System.out::println);
     }
     public void listarContatos(){
-        System.out.println("Lista de contatos:");
+        System.out.println(ConsoleColors.WHITE_BOLD_BRIGHT + "\n==================== Lista de contatos ====================");
         for (int i = 0; i < contatos.size(); i++)
-            System.out.println((i + 1) + " - " + contatos.get(i));
+            System.out.printf("%d. \t %-12s\n", (i+1),contatos.get(i));
+        System.out.println("===========================================================\n" + ConsoleColors.RESET);
     }
+
     public void buscarContato(Scanner entrada){
         System.out.println("Insira a palavra-chave: ");
         String nomeOuSobrenome = entrada.nextLine().toLowerCase();
@@ -103,6 +105,9 @@ public class AgendaDeContatos {
     public void removerTelefone(Scanner entrada){
         Integer indiceDoContato = pegarIndice(entrada);
         if (verificarIndice(indiceDoContato)) {
+            List<Telefone> telefones = contatos.get(indiceDoContato).getTelefones();
+            imprimirListaTelefones(telefones);
+
             System.out.println("Informe o índice do telefone: ");
             int indiceDoTelefone = entrada.nextInt() - 1;
             entrada.nextLine();
@@ -112,6 +117,9 @@ public class AgendaDeContatos {
     public void removerEndereco(Scanner entrada){
         Integer indiceDoContato = pegarIndice(entrada);
         if (verificarIndice(indiceDoContato)) {
+            List<Endereco> enderecos = contatos.get(indiceDoContato).getEnderecos();
+            imprimirListaEnderecos(enderecos);
+
             System.out.println("Informe o índice do endereco: ");
             int indiceDoEndereco = entrada.nextInt() - 1;
             entrada.nextLine();
@@ -122,49 +130,65 @@ public class AgendaDeContatos {
         Integer indice = pegarIndice(entrada);
 
         if (verificarIndice(indice)) {
+
             List<Telefone> telefones = contatos.get(indice).getTelefones();
             List<Endereco> enderecos = contatos.get(indice).getEnderecos();
             System.out.println(contatos.get(indice));
-            System.out.println("Telefones:");
-            for (int i = 0; i < telefones.size(); i++)
-                System.out.println((i + 1) + " - " + telefones.get(i));
-            System.out.println("Endereços: ");
-            for (int i = 0; i < enderecos.size(); i++)
-                System.out.println((i + 1) + " - " + enderecos.get(i));
+
+            imprimirListaTelefones(telefones);
+            imprimirListaEnderecos(enderecos);
         }
     }
     public void telefonesDe(Scanner entrada) {
         Integer indice = pegarIndice(entrada);
         if (verificarIndice(indice)) {
             List<Telefone> telefones = contatos.get(indice).getTelefones();
-            System.out.println("Telefones:");
-            for (int i = 0; i < telefones.size(); i++)
-                System.out.println((i + 1) + " - " + telefones.get(i));
+            imprimirListaTelefones(telefones);
         }
+    }
+
+    public void imprimirListaTelefones(List<Telefone> telefones) {
+        System.out.println(ConsoleColors.WHITE_BOLD_BRIGHT + "\n==================== Lista de telefones ====================");
+        for (int i = 0; i < telefones.size(); i++)
+            System.out.printf("%d. \t %-12s\n",(i+1),telefones.get(i));
+        System.out.println("============================================================" + ConsoleColors.RESET);
     }
     public void enderecosDe(Scanner entrada){
         Integer indice = pegarIndice(entrada);
+
         if (verificarIndice(indice)) {
             List<Endereco> enderecos = contatos.get(indice).getEnderecos();
-            System.out.println("Endereços: ");
-            for (int i = 0; i < enderecos.size(); i++)
-                System.out.println((i + 1) + " - " + enderecos.get(i));
+            imprimirListaEnderecos(enderecos);
         }
+    }
+
+    public void imprimirListaEnderecos(List<Endereco> enderecos) {
+        System.out.println(ConsoleColors.WHITE_BOLD_BRIGHT + "\n==================== Lista de endereços ====================");
+        for (int i = 0; i < enderecos.size(); i++)
+            System.out.printf("%d. \t %-12s\n",(i+1),enderecos.get(i));
+        System.out.println("============================================================" + ConsoleColors.RESET);
     }
     public void umTelefoneDe(Scanner entrada){
         Integer indiceDoContato = pegarIndice(entrada);
         if (verificarIndice(indiceDoContato)) {
+
+            List<Telefone> telefones = contatos.get(indiceDoContato).getTelefones();
+            imprimirListaTelefones(telefones);
+
             System.out.println("Informe o índice do telefone: ");
             Integer indiceDoTelefone = entrada.nextInt() - 1;
             entrada.nextLine();
             System.out.println(contatos.get(indiceDoContato).getTelefones().get(indiceDoTelefone));
         }
     }
-    public void umEnderecoDe(Scanner entrada){
 
+    public void umEnderecoDe(Scanner entrada){
         Integer indiceDoContato = pegarIndice(entrada);
         if (verificarIndice(indiceDoContato)) {
-            System.out.println("Informe o índice do telefone: ");
+            List<Endereco> enderecos = contatos.get(indiceDoContato).getEnderecos();
+            imprimirListaEnderecos(enderecos);
+
+            System.out.println("Informe o índice do endereço: ");
             Integer indiceDoEndereco = entrada.nextInt() - 1;
             entrada.nextLine();
             System.out.println(contatos.get(indiceDoContato).getEnderecos().get(indiceDoEndereco));
@@ -222,6 +246,7 @@ public class AgendaDeContatos {
         return new Endereco(cep, logradouro, numero, cidade, estado);
     }
     private Integer pegarIndice(Scanner entrada){
+        listarContatos();
         System.out.println("Informe o índice do contato: ");
         try {
             Integer indice = entrada.nextInt() - 1;
@@ -239,7 +264,6 @@ public class AgendaDeContatos {
         try{
            contatos.get(index);
            return(true);
-
         } catch(IndexOutOfBoundsException e){
             System.out.println("Índice inválido, finalizando operação!");
         }
