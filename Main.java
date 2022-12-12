@@ -6,6 +6,7 @@ public class Main {
         Boolean continuar = true;
         Scanner entrada = new Scanner(System.in);
         Integer opcao;
+
         ConsoleColors.whiteBoldBrightPrint("Bem vindo à sua Agenda de Contatos!");
         while (continuar){
             ConsoleColors.whiteBoldBrightPrint("Qual operação deseja realizar?");
