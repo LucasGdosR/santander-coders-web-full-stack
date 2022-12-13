@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class AgendaDeContatos {
-    private List<Contato> contatos;
+    public static List<Contato> contatos;
     AgendaDeContatos(){
         this.contatos = new ArrayList<>();
     }
@@ -268,5 +268,18 @@ public class AgendaDeContatos {
             System.out.println("Índice inválido, finalizando operação!");
         }
             return(false);
-    };
+    }
+    public void exportarContatos() {
+        System.out.println("Exportando os contatos em arquivo txt...");
+        String contatosParaTxt = Util.criaTxt(contatos);
+        Util.geraTxt(contatosParaTxt,"Contatos-da-Agenda.txt");
+    }
+
+    public List<Contato> getContatos() {
+        return contatos;
+    }
+
+    public void setContatos(List<Contato> contatos) {
+        this.contatos = contatos;
+    }
 }

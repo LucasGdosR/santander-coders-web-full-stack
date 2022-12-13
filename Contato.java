@@ -25,6 +25,9 @@ public class Contato {
         this.telefones = telefones;
         this.enderecos = enderecos;
     }
+
+    public Contato() {
+    }
     protected String getNome() {
         return nome;
     }
@@ -37,9 +40,29 @@ public class Contato {
     protected List<Endereco> getEnderecos() {
         return enderecos;
     }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setSobrenome(String sobrenome) {
+        this.sobrenome = sobrenome;
+    }
+
+    public void setTelefones(List<Telefone> telefones) {
+        this.telefones = telefones;
+    }
+
+    public void setEnderecos(List<Endereco> enderecos) {
+        this.enderecos = enderecos;
+    }
+
+
     @Override
     public String toString(){
         return "Nome: " + getNome() + "; Sobrenome: " + getSobrenome();
     }
+
 }
+
 

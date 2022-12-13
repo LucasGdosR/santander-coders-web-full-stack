@@ -27,6 +27,8 @@ public class Main {
                 case 12 -> agenda.enderecosDe(entrada);
                 case 13 -> agenda.umTelefoneDe(entrada);
                 case 14 -> agenda.umEnderecoDe(entrada);
+                case 15 -> agenda.exportarContatos();
+                case 16 -> Util.leContatosTxt();
             }
             ConsoleColors.whiteBoldBrightPrint("Deseja realizar mais operações? S/N");
             continuar = desejaContinuar(entrada);
@@ -48,7 +50,9 @@ public class Main {
                 "11. Listar todos os telefones de um contato da agenda;\n" +
                 "12. Listar todos os endereços de um contato da agenda;\n" +
                 "13. Exibir todas as informações de um telefone de um contato da agenda;\n" +
-                "14. Exibir todas as informações de um endereço de um contato da agenda;");
+                "14. Exibir todas as informações de um endereço de um contato da agenda;\n"+
+                "15. Exportar os contatos para txt; \n" +
+                "16. Importar contatos");
     }
     static Integer escolherOpcao(Scanner entrada){
         Integer opcao = entrada.nextInt();

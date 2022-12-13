@@ -7,6 +7,8 @@ public class Telefone {
         this.ddd = ddd;
         this.numero = numero;
     }
+    public Telefone() {
+    }
     @Override
     public String toString(){
         return "("+ ddd + ")" + numero;
@@ -22,5 +24,21 @@ public class Telefone {
     @Override
     public int hashCode() {
         return Objects.hash(ddd, numero);
+    }
+
+    public String getDdd() {
+        return ddd;
+    }
+
+    public String getNumero() {
+        return numero;
+    }
+
+    public void setDdd(String ddd) {
+        this.ddd = ddd;
+    }
+
+    public void setNumero(String numero) {
+        this.numero = numero;
     }
 }
