@@ -1,7 +1,8 @@
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         AgendaDeContatos agenda = new AgendaDeContatos();
         Boolean continuar = true;
         Scanner entrada = new Scanner(System.in);
@@ -27,8 +28,8 @@ public class Main {
                 case 12 -> agenda.enderecosDe(entrada);
                 case 13 -> agenda.umTelefoneDe(entrada);
                 case 14 -> agenda.umEnderecoDe(entrada);
-                case 15 -> agenda.exportarContatos();
-                case 16 -> Util.leContatosTxt();
+                case 15 -> agenda.exportarContatos(entrada);
+                case 16 -> UtilDatabase.createInventory(entrada);
             }
             ConsoleColors.whiteBoldBrightPrint("Deseja realizar mais operações? S/N");
             continuar = desejaContinuar(entrada);
@@ -51,8 +52,8 @@ public class Main {
                 "12. Listar todos os endereços de um contato da agenda;\n" +
                 "13. Exibir todas as informações de um telefone de um contato da agenda;\n" +
                 "14. Exibir todas as informações de um endereço de um contato da agenda;\n"+
-                "15. Exportar os contatos para txt; \n" +
-                "16. Importar contatos");
+                "15. Exportar os contatos para csv; \n" +
+                "16. Importar contatos de um arquivo csv");
     }
     static Integer escolherOpcao(Scanner entrada){
         Integer opcao = entrada.nextInt();

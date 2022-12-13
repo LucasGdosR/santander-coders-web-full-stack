@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -216,11 +217,13 @@ public class AgendaDeContatos {
         return telefones;
     }
     private Telefone incluirTelefone(Scanner entrada){
+        System.out.println("Insira o DDI: ");
+        String ddi = entrada.nextLine();
         System.out.println("Insira o DDD: ");
         String ddd = entrada.nextLine();
         System.out.println("Insira o número: ");
         String numero = entrada.nextLine();
-        return new Telefone(ddd, numero);
+        return new Telefone(ddi, ddd, numero);
     }
     private List<Endereco> incluirEnderecos(Scanner entrada) {
         Boolean continuar = true;
@@ -269,10 +272,12 @@ public class AgendaDeContatos {
         }
             return(false);
     }
-    public void exportarContatos() {
-        System.out.println("Exportando os contatos em arquivo txt...");
-        String contatosParaTxt = Util.criaTxt(contatos);
-        Util.geraTxt(contatosParaTxt,"Contatos-da-Agenda.txt");
+    public void exportarContatos(Scanner entrada) throws IOException {
+        System.out.println("Digite o nome do arquivo");
+        String nomeArquivo = entrada.nextLine();
+        System.out.println("Exportando os contatos em arquivo csv...");
+        String contatosParaTxt = UtilDatabase.criaTxt(contatos);
+        UtilDatabase.createDB(contatosParaTxt,nomeArquivo);
     }
 
     public List<Contato> getContatos() {
