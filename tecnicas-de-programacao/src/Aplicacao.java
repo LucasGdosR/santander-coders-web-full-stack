@@ -1,5 +1,6 @@
 import dominio.PosicaoTabela;
 import dominio.Resultado;
+import impl.CampeonatoBrasileiro;
 import impl.CampeonatoBrasileiroImpl;
 
 import java.io.IOException;
@@ -16,7 +17,7 @@ public class Aplicacao {
         Path file = Path.of("campeonato-brasileiro.csv");
 
         // obter a implementação: (ponto extra - abstrair para interface)
-        CampeonatoBrasileiroImpl resultados =
+        CampeonatoBrasileiro resultados =
                 new CampeonatoBrasileiroImpl(file, (jogo) -> jogo.data().data().getYear() == 2019);
 
         // imprimir estatisticas
@@ -27,7 +28,7 @@ public class Aplicacao {
 
     }
 
-    private static void imprimirEstatisticas(CampeonatoBrasileiroImpl brasileirao) {
+    private static void imprimirEstatisticas(CampeonatoBrasileiro brasileirao) {
         IntSummaryStatistics statistics = brasileirao.getEstatisticasPorJogo();
 
         System.out.println("Estatisticas (Total de gols) - " + statistics.getSum());

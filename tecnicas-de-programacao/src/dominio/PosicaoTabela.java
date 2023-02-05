@@ -7,12 +7,13 @@ public record PosicaoTabela(Time time,
                             Long golsPositivos,
                             Long golsSofridos,
                             Long saldoDeGols,
-                            Long jogos) {
+                            Long jogos,
+                            Long pontos) {
 
     @Override
     public String toString() {
         return  time +
-                ", pontos=" + null + // desenvolver forma de obter a pontuação
+                ", pontos=" + pontos +
                 ", vitorias=" + vitorias +
                 ", derrotas=" + derrotas +
                 ", empates=" + empates +
