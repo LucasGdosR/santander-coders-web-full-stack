@@ -14,11 +14,11 @@ public class Aplicacao {
     public static void main(String[] args) throws IOException {
 
         // obter caminho do arquivo
-        Path file = Path.of("campeonato-brasileiro.csv");
+        Path file = Path.of("tecnicas-de-programacao/campeonato-brasileiro.csv");
 
         // obter a implementação: (ponto extra - abstrair para interface)
         CampeonatoBrasileiro resultados =
-                new CampeonatoBrasileiroImpl(file, (jogo) -> jogo.data().data().getYear() == 2019);
+                new CampeonatoBrasileiroImpl(file, (jogo) -> jogo.data().data().getYear() == 2020 || jogo.data().data().getYear() == 2021);
 
         // imprimir estatisticas
         imprimirEstatisticas(resultados);
