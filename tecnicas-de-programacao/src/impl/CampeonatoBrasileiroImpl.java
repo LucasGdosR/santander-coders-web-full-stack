@@ -113,10 +113,7 @@ public class CampeonatoBrasileiroImpl implements CampeonatoBrasileiro{
 
     public Map<Resultado, Long> getTodosOsPlacares() {
         return jogosFiltrados.stream()
-                .map((jogo) ->
-                        jogo.mandantePlacar() > jogo.visitantePlacar() ?
-                                new Resultado(jogo.mandantePlacar(), jogo.visitantePlacar()) :
-                                new Resultado(jogo.visitantePlacar(), jogo.mandantePlacar()))
+                .map((jogo) -> new Resultado(jogo.mandantePlacar(), jogo.visitantePlacar()))
                 .collect(
                         Collectors.toMap(Function.identity(), resultado -> 1L, Long::sum));
     }
