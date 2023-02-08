@@ -1,12 +1,14 @@
 package impl;
 
-import dominio.Jogo;
-import dominio.PosicaoTabela;
-import dominio.Resultado;
-import dominio.Time;
+import dominio.*;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -34,8 +36,28 @@ public class CampeonatoBrasileiroImpl implements CampeonatoBrasileiro{
     }
 
     public List<Jogo> lerArquivo(Path file) throws IOException {
-        // ToDo
-        return null;
+        Stream<String> stream = Files.lines(file);
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return stream.skip(1)
+                .map(line -> line.split(";"))
+                .map(strings -> {
+                    Integer rodada = Integer.parseInt(strings[0]);
+                    LocalDate data = LocalDate.parse(strings[1], dateFormatter);
+                    LocalTime horario = LocalTime.now();
+                    DayOfWeek dia = DayOfWeek.MONDAY;
+                    DataDoJogo dataDoJogo = new DataDoJogo(data, horario, dia);
+                    Time mandante = new Time(strings[4]);
+                    Time visitante = new Time(strings[5]);
+                    Time vencedor = new Time(strings[6]);
+                    String arena = strings[7];
+                    Integer mandanteplacar = Integer.parseInt(strings[8]);
+                    Integer visitanteplacar = Integer.parseInt(strings[9]);
+                    String estadoMandante = strings[10];
+                    String estadoVisitante = strings[11];
+                    String estadoVencedor = strings[12];
+                    return new Jogo (rodada, dataDoJogo, mandante, visitante, vencedor, arena, mandanteplacar, visitanteplacar, estadoMandante, estadoVisitante, estadoVencedor);
+                })
+                .toList();
     }
 
     public IntSummaryStatistics getEstatisticasPorJogo() {
@@ -151,12 +173,12 @@ public class CampeonatoBrasileiroImpl implements CampeonatoBrasileiro{
                     List<Jogo> jogosDoTime = entry.getValue();
 
                     Long vitorias = jogosDoTime.stream()
-                            .filter(jogo -> jogo.vencedor() == time)
+                            .filter(jogo -> jogo.vencedor().equals(time))
                             .count();
 
                     Time empate = new Time("-");
                     Long empates = jogosDoTime.stream()
-                            .filter(jogo -> jogo.vencedor() == empate)
+                            .filter(jogo -> jogo.vencedor().equals(empate))
                             .count();
 
                     Long jogos = jogosDoTime.stream().count();
@@ -166,7 +188,7 @@ public class CampeonatoBrasileiroImpl implements CampeonatoBrasileiro{
                     Long golsPositivos = jogosDoTime.stream().reduce(0L,
                             (gols, jogo) ->
                                     Long.sum(gols,
-                                            (jogo.mandante() == time ?
+                                            (jogo.mandante().equals(time) ?
                                                     Long.valueOf(jogo.mandantePlacar()) :
                                                     Long.valueOf(jogo.visitantePlacar()))),
                             (a, b) -> a + b);
@@ -174,7 +196,7 @@ public class CampeonatoBrasileiroImpl implements CampeonatoBrasileiro{
                     Long golsSofridos = jogosDoTime.stream().reduce(0L,
                             (gols, jogo) ->
                                     Long.sum(gols,
-                                            (jogo.mandante() == time ?
+                                            (jogo.mandante().equals(time) ?
                                                     Long.valueOf(jogo.visitantePlacar()) :
                                                     Long.valueOf(jogo.mandantePlacar()))),
                             (a, b) -> a + b);
@@ -185,8 +207,8 @@ public class CampeonatoBrasileiroImpl implements CampeonatoBrasileiro{
 
                     return new PosicaoTabela(time, vitorias, derrotas, empates, golsPositivos, golsSofridos, saldoDeGols, jogos, pontos);
                 })
-                .sorted(Comparator.comparing(PosicaoTabela::pontos).thenComparing(PosicaoTabela::vitorias)).
-                collect(Collectors.toCollection(TreeSet::new));
+                .sorted(Comparator.comparing(PosicaoTabela::pontos).thenComparing(PosicaoTabela::vitorias).reversed()).
+                collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     /*
