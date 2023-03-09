@@ -3,67 +3,57 @@ package com.example.heroapp.controllers;
 import com.example.heroapp.model.Hero;
 import com.example.heroapp.services.HeroService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/heroes")
 public class HeroController {
     @Autowired
     private HeroService heroService;
 
-    @PostMapping("/save")
-    public Hero save(@RequestBody Hero hero) {
-        return heroService.save(hero);
+    @GetMapping("/heroes")
+    public String getAllHeroes(Model model) {
+        List<Hero> heroes = heroService.findAll();
+        model.addAttribute("heroes", heroes);
+        return "heroes";
     }
 
-    @GetMapping("/show")
-    public List<Hero> findAll() {
-        return heroService.findAll();
+    @PostMapping("/heroes")
+    public String addHero(@RequestParam("name") String name,
+                          @RequestParam("superPower") String superPower,
+                          @RequestParam("powerLevel") Integer powerLevel,
+                          @RequestParam("weakness") String weakness,
+                          @RequestParam("available") Boolean available) {
+        Hero hero = new Hero();
+        hero.setName(name);
+        hero.setSuperPower(superPower);
+        hero.setPowerLevel(powerLevel);
+        hero.setWeakness(weakness);
+        hero.setAvailable(available);
+        heroService.save(hero);
+
+        return "redirect:heroes";
     }
 
-    @GetMapping("/show/name/{name}")
-    public Hero findByNameContaining(@PathVariable String name) {
-        return heroService.findByNameContaining(name);
+    @GetMapping("add-hero")
+    public String createHero() {
+        return "add-heroes";
     }
 
-    @GetMapping("/show/{id}")
-    public Hero findById(@PathVariable Long id) {
-        return heroService.findById(id);
+    @PostMapping("/heroes/delete/{id}")
+    public String deleteHero(@PathVariable("id") Long id) {
+        heroService.deleteById(id);;
+        return "redirect:../../heroes";
     }
 
-    @DeleteMapping("delete/{id}")
-    public void deleteById(@PathVariable Long id) {
-        heroService.deleteById(id);
-    }
-
-    @GetMapping("show/available")
-    public List<Hero> findAllAvailable() {
-        return heroService.findAllByAvailable(true);
-    }
-
-    @GetMapping("show/unavailable")
-    public List<Hero> findAllUnavailable() {
-        return heroService.findAllByAvailable(false);
-    }
-
-    @PostMapping("edit/{id}/{available}")
-    public ResponseEntity<String> editAvailableById(@PathVariable Long id, @PathVariable Boolean available) {
-        if (available == null)
-            return ResponseEntity.badRequest().body("Availability must be either true or false.");
-        try {
-            heroService.editAvailableById(id, available);
-        } catch (RuntimeException e) {
-            return ResponseEntity.internalServerError().body(e.getMessage());
-        }
-
-        return ResponseEntity.ok("%d is now %s.".formatted(id, available ? "available" : "unavailable"));
-    }
-
-    @GetMapping("show/min-power-level/{powerLevel}")
-    public List<Hero> findAllByPowerLevelGreaterThanEqual(@PathVariable Integer powerLevel) {
-        return heroService.findAllByPowerLevelGreaterThanEqual(powerLevel);
+    @PostMapping("/search")
+    public String searchFor(@RequestParam("name") String name, Model model) {
+        List<Hero> heroes = heroService.queryByName(name);
+        model.addAttribute("heroes", heroes);
+        return "heroes";
     }
 }
