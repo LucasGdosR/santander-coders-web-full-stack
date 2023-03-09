@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>HeroApp</title>
+</head>
+<body>
+  <h1>Heróis</h1>
+  <form method="post" th:action="@{./search}">
+    <label>Busca por nome</label>
+    <input type="text" name="name">
+    <button type="submit">Pesquisar</button>
+  </form>
+
+  <table>
+    <tr><th>Id</th>
+      <th>Nome</th>
+      <th>Superpoder</th>
+      <th>Nível de Poder</th>
+      <th>Disponível?</th>
+      <th>Aposentar</th>
+    </tr>
+    <tr th:each="hero : ${heroes}">
+      <td th:text="${hero.id}"></td>
+      <td th:text="${hero.name}"></td>
+      <td th:text="${hero.superPower}"></td>
+      <td th:text="${hero.powerLevel}"></td>
+      <td th:text="${hero.available ? 'Disponível' : 'Indisponível'}"></td>
+      <td>
+        <form method="post" th:action="@{./heroes/delete/{id}(id=${hero.id})}">
+          <button>Aposentar</button>
+        </form>
+      </td>
+    </tr>
+  </table>
+  <button><a href="add-hero">Cadastrar</a></button>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastrar Herói</title>
+</head>
+<body>
+    <h1>Cadastro de Herói</h1>
+    <form th:action="@{heroes}" method="post">
+        <label>Nome</label>
+        <input type="text" name="name">
+        <br>
+        <label>Superpoder</label>
+        <input type="text" name="superPower">
+        <br>
+        <label>Nível de Poder</label>
+        <input type="number" name="powerLevel">
+        <br>
+        <label>Fraqueza</label>
+        <input type="text" name="weakness">
+        <br>
+        <select name="available">
+            <option name="available" value=true>Disponível</option>
+            <option name="available" value=false>Indisponível</option>
+        </select>
+        <br>
+        <input type="submit">
+    </form>
+</body>
+</html>
