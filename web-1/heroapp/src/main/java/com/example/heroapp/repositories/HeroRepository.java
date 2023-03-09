@@ -14,4 +14,6 @@ public interface HeroRepository extends JpaRepository<Hero, Long> {
     List<Hero> findAllByAvailable(Boolean available);
 
     List<Hero> findAllByPowerLevelGreaterThanEqual(Integer powerLevel);
+
+    List<Hero> queryByName(String name);
 }
