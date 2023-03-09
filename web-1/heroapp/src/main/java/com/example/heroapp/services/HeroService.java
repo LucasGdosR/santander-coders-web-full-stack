@@ -24,6 +24,9 @@ public class HeroService {
         return heroRepository.findByNameContaining(name);
     }
 
+    public List<Hero> queryByName(String name) {
+        return heroRepository.queryByName(name);
+    }
     public Hero findById(Long id) {
         return heroRepository.findById(id).orElse(null);
     }
